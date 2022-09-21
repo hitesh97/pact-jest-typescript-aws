@@ -1,0 +1,63 @@
+{
+  "name": "pact-consumer-example-typescript",
+  "version": "1.0.0",
+  "description": "",
+  "devDependencies": {
+    "@pact-foundation/pact": "9.18.1",
+    "@types/aws4": "1.11.2",
+    "@types/chai": "4.3.3",
+    "@types/dotenv": "6.1.1",
+    "@types/jest": "26.0.24",
+    "@types/supertest": "2.0.12",
+    "newman-wrapper": "1.0.10",
+    "aws4": "1.11.0",
+    "chai": "4.3.6",
+    "cross-env": "7.0.3",
+    "dotenv": "16.0.2",
+    "husky": "7.0.4",
+    "jest": "26.6.3",
+    "jest-junit": "13.2.0",
+    "jest-pact": "0.10.1",
+    "jest-runner-newman": "1.0.5",
+    "newman": "5.3.2",
+    "pmpact": "0.3.14",
+    "rimraf": "3.0.2",
+    "lint-staged": "12.5.0",
+    "prettier": "2.7.1",
+    "supertest": "6.2.4",
+    "swagger-cli": "4.0.4",
+    "@pactflow/swagger-mock-validator": "11.3.0",
+    "ts-jest": "26.5.6",
+    "ts-node": "10.9.1",
+    "tslint": "5.20.1",
+    "tslint-config-prettier": "1.18.0",
+    "tslint-no-focused-test": "0.5.0",
+    "typescript": "4.8.3"
+  },
+  "scripts": {
+    "build": "tsc",
+    "build-test-publish": "yarn run build && yarn run pact-test && yarn run pact-publish && yarn run pact-tag",
+    "swagger-validate-spec": "swagger-cli validate ./docs/pet-store.json",
+    "swagger-validate-pact": "swagger-mock-validator ./docs/pet-store.json ./pact/pacts/test-consumer-json-provider.json",
+    "pact-test": "rimraf pact && jest --detectOpenHandles \"^.+pacttest\\.ts$\"",
+    "pact-publish": "./src/pact/publisher/publish.sh",
+    "delete-pacts-local": "rm ./pact/pacts/*.json",
+    "pact-verify-aws": "./src/pact/verifier/verify.sh",
+    "pact-verify": "npx ts-node ./src/pact/verifier/verify.ts",
+    "lint": "tslint --project . --fix"
+  },
+  "lint-staged": {
+    "src/**/*.ts": [
+      "prettier --write",
+      "tslint --fix",
+      "git add"
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "author": "Yousaf Nabi",
+  "license": "MIT"
+}
